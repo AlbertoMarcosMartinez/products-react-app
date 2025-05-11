@@ -1,4 +1,6 @@
 import React, {useEffect, useState} from 'react'
+import toastify from 'toastify-js'
+import 'toastify-js/src/toastify.css'
 import axios from 'axios'
 
 const Products = () => {
@@ -18,6 +20,8 @@ const Products = () => {
     } else {
         await handleAddProduct();
     }
+    
+    // Cierro el modal y limpio los campos.
     setShowModal(false);
     setId('');
     setName('');
@@ -63,8 +67,29 @@ const Products = () => {
             };
             const response = await axios.put(`${url}/${id}`, updatedProduct);
             setProducts(products.map((product) => (product.id === id ? response.data : product)));
+            
+            toastify({
+                text: "Producto actualizado correctamente",
+                duration: 3000,
+                gravity: "top",
+                position: "right",
+                style: {
+                    background: "#4CAF50",
+                    color: "white"
+                }
+            }).showToast();
         } catch (error) {
             console.error('Error updating product:', error);
+            toastify({
+                text: "Error al actualizar el producto",
+                duration: 3000,
+                gravity: "top",
+                position: "right",
+                style: {
+                    background: "#FF6B6B",
+                    color: "white"
+                }
+            }).showToast();
         }
     }
 
